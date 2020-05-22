@@ -44,7 +44,7 @@ setTimeout 的回调函数是一个匿名函数，所有的匿名函数的this�
 
 ### 题七
 
-深拷贝和浅拷贝是针对引用数据类型而言的：
+#### 深拷贝和浅拷贝是针对引用数据类型而言的：
 
 浅拷贝就是复制引用数据类型的指针，而不复制堆中的数据，新旧对象共享同一块内存
 
@@ -75,6 +75,7 @@ JS异步编程，由于JS是单线程模式的语言, 任务需要排队依次�
 4. 重复2-3步骤。
 
 宏任务：setTimeout, setInterval, requestAnimationFrame, setImmediate 等
+
 微任务：Promise, Object.observe, process.nextTick 等
 
 ### 题九
@@ -97,3 +98,17 @@ const pro = Promise.all([a, b, c]).then(value=>{
 ```
 
 ### 题十
+TypeScript是JavaScript的超集，在JavaScript的原有基础上扩展了更多新特性，总的来说TypeScirpt 包含了 JavaScript，ES6+ 和强大的类型系统。最终会被编译成JavaScript。
+
+### 题十一
+
+#### TypeScirpt优点
+总的来说，ts在语法层面就可以发现问题和异常：
+- 更早暴露异常
+- 更智能，更准确
+- 重构更牢靠
+- 减少不必要的类型判断
+
+#### TypeScirpt缺点
+- 全新的概念较多，对于初学者的学习成本比较大
+- 对于小型项目不灵活，更大的开发成本
