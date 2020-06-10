@@ -141,9 +141,8 @@ class Maybe{
 ```
 let maybe = Maybe.of([5, 6, 1]);
 
-let ex1 = function(x){
-    return maybe.map(fp.map(fp.add(x)));
-}
+let ex1 = x => maybe.map(fp.map(fp.add(x)));
+
 
 console.log(ex1(2));
 ```
@@ -151,7 +150,7 @@ console.log(ex1(2));
 ```
 let xs = Container.of(['do', 'ray', 'me', 'fa', 'so', 'la', 'ti', 'do',]);
 
-let ex2 = x=>x.map(fp.first);
+let ex2 = x => x.map(fp.first);
 
 console.log(ex2(xs));
 ```
@@ -169,9 +168,8 @@ console.log(ex3('name', user))
 ```
 ### 练习四
 ```
-let ex4 = function(n){
-    return Maybe.of(n).map(parseInt);
-}
+let ex4 = n => Maybe.of(n).map(parseInt);
+
 
 console.log(ex4("10"));
 ```
