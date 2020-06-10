@@ -72,12 +72,14 @@ const cars = [
 ] 
 
 const lastCar = fp.flowRight(fp.prop('in_stock'), fp.last);
+
 console.log(lastCar(cars));
 ```
 
 ### 练习二
 ```
 const lastCar = fp.flowRight(fp.prop('name'), fp.first);
+
 console.log(lastCar(cars));
 ```
 
@@ -88,6 +90,7 @@ let _average = function(xs){
 }
 
 let averageDollarValue = fp.flowRight(_average, fp.map(car => car.dollar_value))
+
 console.log(averageDollarValue(cars));
 ```
 
