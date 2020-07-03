@@ -64,7 +64,8 @@ Hot Modules Replacement
 - 根据环境不同导出不同的配置
 - 一个环境对应一个配置文件
 #### Webpack DefinePlugin 
-为代码注入全局成员
+- 定义环境变量
+- 为代码注入全局成员
 #### Tree Shaking
 自动忽略输出冗余代码
 #### 模块合并 concatenateModules
