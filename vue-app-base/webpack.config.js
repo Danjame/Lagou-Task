@@ -1,9 +1,10 @@
 const path = require('path');
 const { VueLoaderPlugin } = require('vue-loader');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-    mode: 'development',
+    mode: 'none',
     entry:'./src/main.js',
     output:{
         filename: 'js/bundle.js',
@@ -13,14 +14,13 @@ module.exports = {
         rules: [
             {
                 test: /\.js$/,
-                use: {
-                    loader: 'babel-loader',
-                }
+                use: 'babel-loader',
+                exclude: '/node_modules/'
             },
             {
                 test: /\.(less|css)$/,
                 use: [
-                    // 'style-loader',
+                    'style-loader',
                     'vue-style-loader',
                     'css-loader',
                     'less-loader'
@@ -28,23 +28,25 @@ module.exports = {
             },
             {
                 test: /\.vue$/,
-                use: [
-                    'vue-loader',
-                ]
+                use: 'vue-loader',
             },
             {
                 test: /\.(png|jpe?g|gif)$/,
-                use: [
-                    'file-loader',
-                ]
+                use: 'file-loader',
             }
         ]
     },
     devServer: {
-        contentBase: ['./public']
+        contentBase: './public'
     },
     plugins: [
+        new CleanWebpackPlugin(),
         new VueLoaderPlugin(),
-        new CleanWebpackPlugin()
+        new HtmlWebpackPlugin({
+            title: 'webpack demo',
+            inject: true,
+            template: './public/index.html',
+            favicon: './public/favicon.ico'
+        })
     ]
 }
