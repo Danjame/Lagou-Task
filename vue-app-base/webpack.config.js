@@ -2,6 +2,7 @@ const path = require('path');
 const { VueLoaderPlugin } = require('vue-loader');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = {
     mode: 'none',
@@ -9,6 +10,12 @@ module.exports = {
     output:{
         filename: 'js/bundle.js',
         path: path.join(__dirname, 'dist')
+    },
+    devtool: 'source-map',
+    devServer: {
+        contentBase: './public',
+        open: true,
+        hot: true
     },
     module: {
         rules: [
@@ -32,21 +39,24 @@ module.exports = {
             },
             {
                 test: /\.(png|jpe?g|gif)$/,
-                use: 'file-loader',
+                use: {
+                    loader: 'url-loader',
+                    options: {
+                        esModule: false
+                    }
+                }
             }
         ]
-    },
-    devServer: {
-        contentBase: './public'
     },
     plugins: [
         new CleanWebpackPlugin(),
         new VueLoaderPlugin(),
         new HtmlWebpackPlugin({
-            title: 'webpack demo',
+            title: 'Webpack Task',
             inject: true,
             template: './public/index.html',
             favicon: './public/favicon.ico'
-        })
+        }),
+        new webpack.HotModuleReplacementPlugin()
     ]
 }
