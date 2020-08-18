@@ -8,7 +8,8 @@
 1. `Vue.set(obj, property, value)`
 2. `this.$set(this.obj, property, valu)`
 
-内部原理
+内部原理：
+
 Vue 在初始化实例的时候会把data对象里的所有的 key 转化成 getter 和 setter，所以只有在初始化时存在的 key 才会被检查到。所以 vue 是无法侦察到 key 的增加和删除的。
 
 ### 题二
@@ -32,9 +33,43 @@ d) newEndVnode / oldStartVnode: 新结束节点和旧开始节点逆向比较
 ## 编程题
 ### 题一
 #### 模拟 VueRouter 的 hash 模式的实现，实现思路和 History 模式类似，把 URL 中的 # 后面的内容作为路由的地址，可以通过 hashchange 事件监听路由地址的变化。
+```
+let _vue = null
+export default Vuerouter{
+    construtor (options){
+        this.options = options;
+        this.routeMap = {};
+        this.data = Vue.observable({
+            current: '/'
+        })
+    }
+
+    static install (Vue){
+        if(Vuerouter.install.installed){
+            return
+        }
+        Vuerouter.install.installed =  true;
+        _Vue = Vue
+        _Vue.mixin({
+            beforeCreate:()=>{
+                if(this.$options.router){
+                    _Vue.prototype.$router = this.$options.router
+                }
+            }
+        })
+    }
+
+    creatRouteMap(options){
+        options.routes.forEach(route=>{
+            this.routeMap[route.path]=route.component
+        })
+    }
+}
+```
 
 ### 题二
 #### 在模拟 Vue.js 响应式源码的基础上实现 v-html 指令，以及 v-on 指令。
+
 
 ### 题三
 #### 参考 Snabbdom 提供的电影列表的示例，利用Snabbdom 实现类似的效果。
