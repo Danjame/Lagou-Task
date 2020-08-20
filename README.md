@@ -36,63 +36,123 @@ d) newEndVnode / oldStartVnode: 新结束节点和旧开始节点逆向比较
 ```
 let _vue = null
 
-export default Vuerouter{
+export default class VueRouter {
 
-    construtor (options){
-        this.options = options;
-        this.routeMap = {};
-        this.data = Vue.observable({
+    constructor(options) {
+        this.options = options
+        this.routeMap = {}
+        this.data = _vue.observable({
             current: '/'
         })
+        this.init();
     }
 
-    static install (Vue){
-        if(Vuerouter.install.installed){
-            return
+    static install(Vue) {
+        if (VueRouter.install.installed) {
+            return;
         }
-        Vuerouter.install.installed =  true;
-        _Vue = Vue
-        _Vue.mixin({
-            beforeCreate:()=>{
-                if(this.$options.router){
-                    _Vue.prototype.$router = this.$options.router
-
-                    this.$router.init()
+        VueRouter.install.installed = true
+        _vue = Vue
+        _vue.mixin({
+            beforeCreate () {
+                if (this.$options.router) {
+                    _vue.prototype.$router = this.$options.router
                 }
             }
         })
     }
 
-    init(){
-        this.creatRouteMap(this.options)
-        window.addEventListener('hashchange', this.hashChangeHandler)
-        this.initComponent()
+    init() {
+        this.createRouteMap()
+        this.initComponent(_vue)
+        window.addEventListener('load', this.hashChangeHandler.bind(this))
+        window.addEventListener('hashchange', this.hashChangeHandler.bind(this))
     }
 
-    creatRouteMap(options){
-        options.routes.forEach(route=>{
-            this.routeMap[route.path]=route.component
+    createRouteMap() {
+        this.options.routes.forEach(route => {
+            this.routeMap[route.path] = route.component
         })
     }
 
-    hashChangeHandler(){
-        this.data.current = window.location.hash.slice(1)
+    hashChangeHandler() {
+        this.data.current = `/${window.location.hash.slice(1)}`
     }
 
-    initComponent(){
-        Vue.component(
-            'router-link',
-            props:{
+    initComponent(Vue) {
+        const that = this
+        Vue.component('router-link', {
+            props: {
                 to: String
             },
-            template: '<a :href='to'><slot></slot></a>'
-        )
+            render(h){
+                return h('a', {
+                    attrs:{
+                        href: `#${this.to}`
+                    },
+                    on: {
+                        click: this.clickHandler
+                    }
+                }, [this.$slots.default])
+            },
+            methods: {
+                clickHandler(e){
+                    e.preventDefault()
+                    this.$router.data.current = this.to
+                    window.location.hash = `#${this.to.slice(1)}`
+                }
+            }
+        }),
+
+        Vue.component('router-view', {
+            render(h) {
+                const component = that.routeMap[that.data.current]
+                return h(component)
+            }
+        })
     }
 }
 ```
 
 ### 题二
 #### 在模拟 Vue.js 响应式源码的基础上实现 v-html 指令，以及 v-on 指令。
+在`class Compiler`中增加以下代码：
+```
+  // 处理 v-html 指令
+  htmlUpdater(node, value, key){
+    node.innerHTML = value
+    new Watcher(this.vm, key, (newValue) => {
+      node.innerHTML = newValue
+    })
+  }
+``` 
+修改 `update` 方法为：
+```
+  update (node, key, attrName) {
+    if(attrName.startsWith('on')){
+        // 截取时间名称
+      const event = attrName.slice(3)
+      this.addEventHandler(node, event, key)
+      return
+    }
+    let updateFn = this[attrName + 'Updater']
+    updateFn && updateFn.call(this, node, this.vm[key], key)
+  }
+```
+增加`addEventHandler`方法:
+```
+  addEventHandler(node, event, Fn){
+      // 用正则判断是否为合法函数名，是的话从vue实例中定义的方法中找到并执行
+    if(/^[a-zA-Z\$_][a-zA-Z\d_]*$/.test(Fn)){
+      node.addEventListener(event, e=>this.vm[Fn](e))
+    } else {
+        //否则直接执行脚本语句
+      node.addEventListener(event, function () {
+        eval(Fn)
+      })
+    }
+  }
+```
 
 
 ### 题三
