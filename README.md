@@ -35,7 +35,9 @@ d) newEndVnode / oldStartVnode: 新结束节点和旧开始节点逆向比较
 #### 模拟 VueRouter 的 hash 模式的实现，实现思路和 History 模式类似，把 URL 中的 # 后面的内容作为路由的地址，可以通过 hashchange 事件监听路由地址的变化。
 ```
 let _vue = null
+
 export default Vuerouter{
+
     construtor (options){
         this.options = options;
         this.routeMap = {};
@@ -54,15 +56,37 @@ export default Vuerouter{
             beforeCreate:()=>{
                 if(this.$options.router){
                     _Vue.prototype.$router = this.$options.router
+
+                    this.$router.init()
                 }
             }
         })
+    }
+
+    init(){
+        this.creatRouteMap(this.options)
+        window.addEventListener('hashchange', this.hashChangeHandler)
+        this.initComponent()
     }
 
     creatRouteMap(options){
         options.routes.forEach(route=>{
             this.routeMap[route.path]=route.component
         })
+    }
+
+    hashChangeHandler(){
+        this.data.current = window.location.hash.slice(1)
+    }
+
+    initComponent(){
+        Vue.component(
+            'router-link',
+            props:{
+                to: String
+            },
+            template: '<a :href='to'><slot></slot></a>'
+        )
     }
 }
 ```
