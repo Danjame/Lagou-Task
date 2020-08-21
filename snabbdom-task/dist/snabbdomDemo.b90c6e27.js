@@ -814,69 +814,142 @@ var _eventlisteners = _interopRequireDefault(require("snabbdom/modules/eventlist
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 var patch = (0, _snabbdom.init)([_style.default, _eventlisteners.default]);
 var app = document.querySelector('#app');
 var data = [{
   rank: 1,
-  title: 'Shanghai University',
-  desc: 'from Shanghai, China'
+  name: 'Massachusetts Institute of Technology (MIT)',
+  desc: '“Mind and Hand” is the thought-provoking motto of the Massachusetts Institute of Technology, known also as MIT. This motto enigmatically encapsulates this famous institution’s mission to advance knowledge in science, technology and areas of scholarship that can help to make the world a better place.'
 }, {
   rank: 2,
-  title: 'Beijing University',
-  desc: 'from Shanghai, China'
+  name: 'Stanford University',
+  desc: 'Located 35 miles south of San Francisco and 20 miles north of San Jose, Stanford University is in the heart of Northern California’s dynamic Silicon Valley, home to Yahoo, Google, Hewlett-Packard, and many other cutting-edge tech companies that were founded by and continue to be led by Stanford alumni and faculty. Nicknamed the “billionaire factory”, it is said that if Stanford graduates formed their own country it would boast one of the world’s largest ten economies.'
 }, {
   rank: 3,
-  title: 'Qinghua University',
-  desc: 'from Shanghai, China'
+  name: 'The University of Edinburgh',
+  desc: 'Established in 1636, Harvard is the oldest higher education institution in the United States, and is widely regarded in terms of its influence, reputation, and academic pedigree as a leading university in not just the US but also the world.'
 }, {
   rank: 4,
-  title: 'Zhongshan University',
-  desc: 'from Shanghai, China'
+  name: 'California Institute of Technology (Caltech)',
+  desc: 'The California Institute of Technology (Caltech) is a world-renowned science and engineering research and education institution, located in Pasadena, California, around 11 miles northeast of downtown Los Angeles.'
 }, {
   rank: 5,
-  title: 'Transportation University',
-  desc: 'from Shanghai, China'
-}];
+  name: 'University of Oxford',
+  desc: 'The University of Oxford is the oldest university in the English-speaking world, and is actually so ancient that its founding date is unknown – though it is thought that teaching took place there as early as the 11th century.'
+}]; //页面虚拟dom
 
 function view() {
-  return (0, _snabbdom.h)('div', [(0, _snabbdom.h)('div', 'top 10 universities'), (0, _snabbdom.h)('div', [(0, _snabbdom.h)('span', 'Sort by'), (0, _snabbdom.h)('button', {
+  return (0, _snabbdom.h)('div', [(0, _snabbdom.h)('div.head', 'Top Universities Ranking'), (0, _snabbdom.h)('div.sortWrapper', [(0, _snabbdom.h)('div.sortTitle', 'Sort by'), (0, _snabbdom.h)('button.btn', {
     on: {
-      click: sortByRank
+      click: rankSort
     }
-  }, 'Rank'), (0, _snabbdom.h)('button', {
+  }, 'Rank'), (0, _snabbdom.h)('button.btn', {
     on: {
-      click: sortByTitle
+      click: [alphabetSort, 'name']
     }
-  }, 'Title'), (0, _snabbdom.h)('button', {
+  }, 'Name'), (0, _snabbdom.h)('button.btn', {
     on: {
-      click: sortByDesc
+      click: [alphabetSort, 'desc']
     }
-  }, 'Discription')]), (0, _snabbdom.h)('div', listView(data))]);
-}
+  }, 'Discription'), (0, _snabbdom.h)('button.btn', {
+    on: {
+      click: addHandler
+    }
+  }, 'Add')]), (0, _snabbdom.h)('div', listView(data))]);
+} //列表虚拟dom
 
-function sortByRank() {
-  console.log('Tank');
-  data = data.sort(function (a, b) {
-    return b.rank - a.rank;
-  });
-  oldVnode = patch(oldVnode, view());
-}
-
-function sortByTitle() {
-  console.log('Title');
-}
-
-function sortByDesc() {
-  console.log('Discription');
-}
 
 function listView(data) {
   return (0, _snabbdom.h)('ul', data.map(function (item) {
-    return (0, _snabbdom.h)('li.university', [(0, _snabbdom.h)('span', item.rank), (0, _snabbdom.h)('span', item.title), (0, _snabbdom.h)('span', item.desc)]);
+    return (0, _snabbdom.h)('li.uni', {
+      style: {
+        opacity: '0',
+        transition: 'opacity 1s',
+        remove: {
+          opacity: '0'
+        },
+        delayed: {
+          opacity: '1'
+        }
+      }
+    }, [(0, _snabbdom.h)('div.rank', item.rank), (0, _snabbdom.h)('div.name', item.name), (0, _snabbdom.h)('div.desc', item.desc), (0, _snabbdom.h)('button.delete', {
+      on: {
+        click: [removeHandler, item.rank]
+      }
+    }, 'X')]);
   }));
 }
 
-var oldVnode = patch(app, view());
+var oldVnode = patch(app, view()); //添加
+
+function addHandler() {
+  var maxRank = Math.max.apply(Math, _toConsumableArray(data.map(function (item) {
+    return item.rank;
+  })));
+  data.push({
+    rank: ++maxRank,
+    name: "new name".concat(maxRank),
+    desc: "new desc".concat(maxRank)
+  });
+  oldVnode = patch(oldVnode, view());
+} //删除
+
+
+function removeHandler(rank) {
+  data.forEach(function (item) {
+    data = data.filter(function (item) {
+      return item.rank !== rank;
+    });
+  });
+  oldVnode = patch(oldVnode, view());
+} //排名排序
+
+
+function rankSort() {
+  data = data.sort(function (a, b) {
+    return a.rank - b.rank;
+  });
+  oldVnode = patch(oldVnode, view());
+} //其他属性字母排序
+
+
+function alphabetSort(property) {
+  //提取属性值并排序
+  var arr = [];
+  data.forEach(function (item) {
+    arr.push(item[property]);
+  });
+  arr.sort(); //根据属性值的顺序排序data对象
+
+  var newData = [];
+
+  var _loop = function _loop(i) {
+    data.forEach(function (item) {
+      if (item[property] === arr[i]) {
+        newData[i] = item;
+      }
+    });
+  };
+
+  for (var i = 0; i < data.length; i++) {
+    _loop(i);
+  }
+
+  data = newData;
+  oldVnode = patch(oldVnode, view());
+}
 },{"snabbdom":"node_modules/snabbdom/snabbdom.js","snabbdom/modules/style":"node_modules/snabbdom/modules/style.js","snabbdom/modules/eventlisteners":"node_modules/snabbdom/modules/eventlisteners.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
