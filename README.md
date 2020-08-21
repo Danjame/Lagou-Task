@@ -28,6 +28,8 @@ c) newStartVnode / oldEndVnode: 新开始节点和旧结束节点逆向比较
 d) newEndVnode / oldStartVnode: 新结束节点和旧开始节点逆向比较
 
 - 通过对新旧 vnode 的子节点进行比较，对子节点进行增加，删除或者移动。
+- 如果 oldChildren 的数组先遍历完(oldStartIdx > oldEndIdx)，说明 newChildren 有剩余，把剩余节点添加到后面
+- 如果 newChildren 的数组先遍历完(newStartIdx > newEndIdx)，说明 oldChildren 有剩余，把剩余节点全部删除
 
 
 ## 编程题
@@ -41,6 +43,7 @@ export default class VueRouter {
     constructor(options) {
         this.options = options
         this.routeMap = {}
+        // 把 data 设置为响应式
         this.data = _vue.observable({
             current: '/'
         })
@@ -53,6 +56,7 @@ export default class VueRouter {
         }
         VueRouter.install.installed = true
         _vue = Vue
+        // 混入
         _vue.mixin({
             beforeCreate () {
                 if (this.$options.router) {
@@ -63,6 +67,7 @@ export default class VueRouter {
     }
 
     init() {
+        // 初始化创建路由映射关系，创建组件和监听 hash 变化
         this.createRouteMap()
         this.initComponent(_vue)
         window.addEventListener('load', this.hashChangeHandler.bind(this))
@@ -76,6 +81,7 @@ export default class VueRouter {
     }
 
     hashChangeHandler() {
+        // 提取#后面地址作为路由地址
         this.data.current = `/${window.location.hash.slice(1)}`
     }
 
@@ -157,3 +163,192 @@ export default class VueRouter {
 
 ### 题三
 #### 参考 Snabbdom 提供的电影列表的示例，利用Snabbdom 实现类似的效果。
+index.html
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./src/style.css">
+    <title>Snabdom Task</title>
+</head>
+<body>
+    <div id="app"></div>
+    <script src="./src/snabbdomDemo.js"></script>
+</body>
+</html>
+```
+snabbdomDemo.js
+```
+import { init, h } from 'snabbdom'
+import style from 'snabbdom/modules/style'
+import eventlisteners from 'snabbdom/modules/eventlisteners'
+
+const patch = init([
+    style,
+    eventlisteners
+])
+
+let app = document.querySelector('#app')
+
+let data = [
+        {rank: 1, name: 'Massachusetts Institute of Technology (MIT)', 
+        desc: '“Mind and Hand” is the thought-provoking motto of the Massachusetts Institute of Technology, known also as MIT. This motto enigmatically encapsulates this famous institution’s mission to advance knowledge in science, technology and areas of scholarship that can help to make the world a better place.'},
+        {rank: 2, name: 'Stanford University', 
+        desc: 'Located 35 miles south of San Francisco and 20 miles north of San Jose, Stanford University is in the heart of Northern California’s dynamic Silicon Valley, home to Yahoo, Google, Hewlett-Packard, and many other cutting-edge tech companies that were founded by and continue to be led by Stanford alumni and faculty. Nicknamed the “billionaire factory”, it is said that if Stanford graduates formed their own country it would boast one of the world’s largest ten economies.'},
+        {rank: 3, name: 'The University of Edinburgh', 
+        desc: 'Established in 1636, Harvard is the oldest higher education institution in the United States, and is widely regarded in terms of its influence, reputation, and academic pedigree as a leading university in not just the US but also the world.'},
+        {rank: 4, name: 'California Institute of Technology (Caltech)', 
+        desc: 'The California Institute of Technology (Caltech) is a world-renowned science and engineering research and education institution, located in Pasadena, California, around 11 miles northeast of downtown Los Angeles.'},
+        {rank: 5, name: 'University of Oxford', 
+        desc: 'The University of Oxford is the oldest university in the English-speaking world, and is actually so ancient that its founding date is unknown – though it is thought that teaching took place there as early as the 11th century.'}
+    ]
+//页面虚拟dom
+function view(){
+    return h ('div', [
+        h('div.head', 'Top Universities Ranking'),
+        h('div.sortWrapper',
+        [
+            h('div.sortTitle','Sort by'),
+            h('button.btn', {on: {click: rankSort}}, 'Rank'),
+            h('button.btn', {on: {click: [alphabetSort, 'name']}}, 'Name'),
+            h('button.btn', {on: {click: [alphabetSort, 'desc']}}, 'Discription'),
+            h('button.btn', {on: {click: addHandler}}, 'Add')
+        ]),
+        h('div', listView(data))
+    ])
+}
+//列表虚拟dom
+function listView(data){
+    return h('ul', data.map(item=>{
+        return h('li.uni', { style: {
+            opacity: '0',
+            transition: 'opacity 1s',
+            remove: { opacity: '0' },
+            delayed: { opacity: '1' }
+          }} ,[
+            h('div.rank', item.rank),
+            h('div.name', item.name),
+            h('div.desc', item.desc),
+            h('button.delete', {on: {click: [removeHandler, item.rank]}}, 'X')
+        ])
+    }))
+}
+
+let oldVnode = patch(app, view())
+
+//添加
+function addHandler(){
+    let maxRank = Math.max(...data.map(item=>item.rank))
+    data.push({
+        rank: ++maxRank,
+        name: `new name${maxRank}`,
+        desc: `new desc${maxRank}`,
+    })
+
+    oldVnode = patch(oldVnode, view())
+}
+
+//删除
+function removeHandler(rank){
+    data.forEach(item=>{
+        data = data.filter(item=>{
+            return item.rank !== rank
+        })
+    })
+    oldVnode = patch(oldVnode, view())
+}
+
+//排名排序
+function rankSort (){
+    data = data.sort((a, b)=>{
+        return a.rank - b.rank
+    })
+    oldVnode = patch(oldVnode, view())
+}
+//其他属性字母排序
+function alphabetSort(property){
+    //提取属性值并排序
+    let arr = []
+    data.forEach(item=>{
+        arr.push(item[property])
+    })
+    arr.sort()
+
+    //根据属性值的顺序排序data对象
+    let newData = [];
+    for(let i = 0; i<data.length; i++){
+        data.forEach(item=>{
+            if(item[property]===arr[i]){
+                newData[i]=item;
+            }
+        })
+    }
+    data = newData;
+    oldVnode = patch(oldVnode, view())
+}
+```
+style.css
+```
+body{
+    margin: 0 auto;
+    width: 800px;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+button{
+    border: none;
+    background-color: transparent;
+    outline: none;
+}
+
+.head{
+    padding: 20px;
+    text-align: center;
+    font-size: 28px;
+}
+
+.btn{
+    width: 100px;
+}
+
+.sortWrapper{
+    display: flex;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.sortTitle{
+    width: 200px;
+    text-align: center;
+}
+
+.uni{
+    display: flex;
+}
+
+.rank, .name, .desc, .delete{
+    padding: 10px;
+    flex-shrink: 0;
+}
+
+.rank{
+    width: 50px;
+}
+
+.name{
+    width: 100px
+}
+
+.desc{
+    width:500px;
+}
+
+
+```
