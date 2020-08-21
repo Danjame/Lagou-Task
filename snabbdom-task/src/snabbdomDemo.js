@@ -1,12 +1,13 @@
-import {h, init} from 'snabbdom'
+import { init, h } from 'snabbdom'
+import style from 'snabbdom/modules/style'
+import eventlisteners from 'snabbdom/modules/eventlisteners'
 
-const patch = init([])
-
-let vnode = h('div#container', 'hello world')
+const patch = init([
+    style,
+    eventlisteners
+])
 
 let app = document.querySelector('#app')
-
-
 
 let data = [
         {rank: 1, title: 'Shanghai University', desc: 'from Shanghai, China'},
@@ -21,14 +22,29 @@ function view(){
         h('div', 'top 10 universities'),
         h('div', [
             h('span','Sort by'),
-            h('button','Rank'),
-            h('button','Title'),
-            h('button','discription')
+            h('button', {on: {click: sortByRank}}, 'Rank'),
+            h('button', {on: {click: sortByTitle}}, 'Title'),
+            h('button', {on: {click: sortByDesc}}, 'Discription')
         ]),
         h('div', listView(data))
     ])
 }
 
+function sortByRank (){
+    console.log('Tank');
+    data = data.sort((a, b)=>{
+        return b.rank - a.rank
+    })
+    oldVnode = patch(oldVnode, view())
+}
+
+function sortByTitle(){
+    console.log('Title')
+}
+
+function sortByDesc(){
+    console.log('Discription');
+}
 
 function listView(data){
     return h('ul', data.map(item=>{
@@ -40,4 +56,4 @@ function listView(data){
     }))
 }
 
-patch(app, view())
+let oldVnode = patch(app, view())
