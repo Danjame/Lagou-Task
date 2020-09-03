@@ -67,8 +67,29 @@ src/core/observer/index.js
  1. 对比新旧 VNode 和其子节点之间的差异
  2. 如果其子节点不同，则调用 updatechildren 对比子节点的差异
 
- ### updateChildren
+### updateChildren
  1. 依次找到相同的子节点进行比较，有四种比较方式
  2. 在老节点的子节点中查找 newStartVnode，并进行处理
  3. 如果新节点比老节点多，把新增子节点插入到 DOM 中
  4. 如果老节点比新节点多，删除多余的老节点
+
+## 模板编译
+### compileToFunctions(template...)
+1. 从缓存中加载编译好的 render 函数
+2. 如果缓存中没有，则调用 compile(template, options)
+### compile(template, options)
+1. 合并 options
+### baseCompile(template.trim(), finalOptions)
+1. `parse()`， 把 template 转换成 AST tree
+2. `optimize()`：
+- 标记 AST tree 中的静态 sub trees
+- 检测到静态子树，设置为静态，不需要在每次重新渲染时重新生成节点
+- patch 阶段跳过静态子树
+3. `generate()`，把 AST tree 转换成字符串形式的代码
+### compileToFunctions(template...)
+1. createFunction 把字符串形式的代码转换成函数
+2. render 和 staticRenderFns 初始化完毕，挂载到 Vue 实例的 options 对应的属性中
+
+注：
+- 模版编译过程中标记静态根节点，对静态根节点进行优化处理，重新渲染的时候不需要再处理静态根节点，因其内容不会再发生改变。
+- 在模版中不要留下无意义的空白和换行，否则会在 AST 对象中保留这些空白和换行，并且被存储在内存中，对浏览器渲染没有任何意义。
