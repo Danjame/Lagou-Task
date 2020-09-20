@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-cli/node_modules
-grunt-task/node_modules
-gulp-task/node_modules
-=======
-.DS_Store
 node_modules
-/dist
+.DS_Store
+dist
 
 # local env files
 .env.local
@@ -24,4 +19,3 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
->>>>>>> fed-e-task-03-01
