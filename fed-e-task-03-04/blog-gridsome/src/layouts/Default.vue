@@ -1,6 +1,6 @@
 <template>
   <div class="layout">
-    <header class="header">
+    <!-- <header class="header">
       <strong>
         <g-link to="/">{{ $static.metadata.siteName }}</g-link>
       </strong>
@@ -8,43 +8,98 @@
         <g-link class="nav__link" to="/">Home</g-link>
         <g-link class="nav__link" to="/about/">About</g-link>
       </nav>
-    </header>
-    <slot/>
+    </header> -->
+    <el-container>
+      <el-header style="height: auto; padding: 50px">
+        <div>
+          <h1>Danjun Xie</h1>
+          <p>Welcome to my page</p>
+        </div>
+        <el-row>
+          <g-link to='https://danjunxie.com' style="marginRight: 20px">
+            <el-button>Personal Site</el-button>
+          </g-link>
+           <g-link to= 'https://github.com/Danjame/Lagou-Task'>
+            <el-button>Github</el-button>
+           </g-link>
+        </el-row>
+      </el-header>
+      <el-container>
+        <el-aside width="200px" style="borderRight: solid 1px #ddd">
+          <el-menu style="borderWidth: 0" @select="handleSelect" :default-active = "this.$route.query.key">
+              <el-menu-item index="1">
+                <i class="el-icon-news"></i>
+                <span slot="title">最新动态</span>
+              </el-menu-item>
+              <el-menu-item index="2">
+                <i class="el-icon-connection"></i>
+                <span slot="title">社交圈子</span>
+              </el-menu-item>
+              <el-menu-item index="3">
+                <i class="el-icon-tickets"></i>
+                <span slot="title">博客列表</span>
+              </el-menu-item>
+              <el-menu-item index="4">
+                <i class="el-icon-coin"></i>
+                <span slot="title">开源项目</span>
+              </el-menu-item>
+          </el-menu>
+        </el-aside>
+        <el-main>
+          <slot />
+        </el-main>
+      </el-container>
+      <el-footer>Footer</el-footer>
+    </el-container>
   </div>
 </template>
 
-<static-query>
-query {
-  metadata {
-    siteName
+<script>
+export default {
+  methods: {
+    handleSelect(key) {
+      switch (key) {
+        case '1':
+          this.routerPush('/', key)
+          break;
+        case '2':
+          this.routerPush('/about/', key)
+          break;
+        case '3':
+          break;
+        case '4':
+          break;
+      }
+    },
+    routerPush(path, key){
+      this.$router.push({ path, query: { key }}).catch(err=>err);
+    }
   }
-}
-</static-query>
+};
+</script>
 
 <style>
-body {
-  font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-  margin:0;
-  padding:0;
-  line-height: 1.5;
+* {
+  margin: 0;
+  padding: 0;
 }
 
-.layout {
-  max-width: 760px;
-  margin: 0 auto;
-  padding-left: 20px;
-  padding-right: 20px;
+.el-header, .el-footer {
+  background-color: #eee;
+  color: #333;
+  text-align: center;
+  line-height: 60px;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  height: 80px;
+.el-aside {
+  color: #333;
+  text-align: center;
+  line-height: 200px;
 }
 
-.nav__link {
-  margin-left: 20px;
+.el-main {
+  color: #333;
+  text-align: center;
+  line-height: 160px;
 }
 </style>
