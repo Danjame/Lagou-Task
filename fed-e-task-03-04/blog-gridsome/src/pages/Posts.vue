@@ -1,7 +1,17 @@
 <template>
   <Layout>
-    <div>
-      update
+       <div v-for="edge in $page.posts.edges" :key="edge.node.id">
+      <a href="">
+        <h2>
+          {{edge.node.Title}}
+        </h2>
+        <p>
+          {{edge.node.published_at}}
+        </p>
+        <p>
+          {{edge.node.favor}}
+        </p>
+      </a>
     </div>
   </Layout>
 </template>

@@ -1,14 +1,5 @@
 <template>
   <div class="layout">
-    <!-- <header class="header">
-      <strong>
-        <g-link to="/">{{ $static.metadata.siteName }}</g-link>
-      </strong>
-      <nav class="nav">
-        <g-link class="nav__link" to="/">Home</g-link>
-        <g-link class="nav__link" to="/about/">About</g-link>
-      </nav>
-    </header> -->
     <el-container>
       <el-header style="height: auto; padding: 50px">
         <div>
@@ -26,7 +17,7 @@
       </el-header>
       <el-container>
         <el-aside width="200px" style="borderRight: solid 1px #ddd">
-          <el-menu style="borderWidth: 0" @select="handleSelect" :default-active = "this.$route.query.key">
+          <el-menu style="borderWidth: 0" :default-active = "this.$route.query.key" @select="handleSelect" >
               <el-menu-item index="1">
                 <i class="el-icon-news"></i>
                 <span slot="title">最新动态</span>
@@ -66,6 +57,7 @@ export default {
           this.routerPush('/about/', key)
           break;
         case '3':
+          this.routerPush('/posts/', key)
           break;
         case '4':
           break;
