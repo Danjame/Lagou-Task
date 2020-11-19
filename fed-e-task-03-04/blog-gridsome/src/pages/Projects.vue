@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <div>
-
+        Projects
     </div>
   </Layout>
 </template>
@@ -13,13 +13,11 @@
 <script>
 export default {
   metaInfo: {
-    title: 'Hello, world!'
+    title: 'Projects'
   }
 }
 </script>
 
-<style>
-.home-links a {
-  margin-right: 1rem;
-}
+<style scoped>
+
 </style>

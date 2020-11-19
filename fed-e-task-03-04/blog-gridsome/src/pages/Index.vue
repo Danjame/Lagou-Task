@@ -1,7 +1,19 @@
 <template>
   <Layout>
-    <div>
-      update
+    <div class="container">
+      <g-link :to="'/article/' + $page.posts.edges[0].node.id">
+        <h2 class="post-title">
+          {{$page.posts.edges[0].node.Title}}
+        </h2>
+        <p class="post-time">
+          发布时间： {{$page.posts.edges[0].node.published_at}}
+        </p>
+        <p class="post-favor">
+          <i class="el-icon-star-on" v-if="$page.posts.edges[0].node.favor"></i>
+          <i class="el-icon-star-off" v-else></i>
+          {{$page.posts.edges[0].node.favor}}
+        </p>
+      </g-link>
     </div>
   </Layout>
 </template>
@@ -30,8 +42,20 @@ export default {
 }
 </script>
 
-<style>
-.home-links a {
-  margin-right: 1rem;
+<style scoped>
+.post-title,
+.post-time,
+.post-favor{
+    text-align: center;
+    padding: 10px;
+}
+
+.active{
+    text-decoration: none;
+}
+
+a{
+    text-decoration: none;
+    color: #333;
 }
 </style>

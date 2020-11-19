@@ -1,8 +1,7 @@
 <template>
   <Layout>
-    <div class="post-wrapper" v-for="edge in $page.posts.edges" :key="edge.node.id">
+    <div class="container" v-for="edge in $page.posts.edges" :key="edge.node.id">
       <g-link :to="'/article/' + edge.node.id">
-      <!-- <g-link to="/article/"> -->
         <h2 class="post-title">
           {{edge.node.Title}}
         </h2>
@@ -17,20 +16,18 @@
       </g-link>
     </div>
     <div class="pagination">
-        <el-pagination
-        background
-        layout="prev, pager, next"
-        :total="100"
-        style=""
-        >
-    </el-pagination>
+        <pager linkClass="pagination-link" :info="$page.posts.pageInfo"></pager>
     </div>
   </Layout>
 </template>
 
 <page-query>
-query{
-  posts: allStrapiPost{
+query ($page: Int){
+  posts: allStrapiPost(perPage:6, page: $page) @paginate {
+    pageInfo{
+        totalPages
+        currentPage
+    }
     edges{
       node{
         id
@@ -45,15 +42,19 @@ query{
 </page-query>
 
 <script>
+import { Pager } from 'gridsome'
 export default {
   metaInfo: {
     title: 'Post List'
+  },
+  components:{
+      Pager
   }
 }
 </script>
 
-<style>
-.post-wrapper{
+<style scoped>
+.container{
     margin-bottom: 20px;
     border-bottom: solid 1px #eee;
 }
@@ -69,6 +70,10 @@ export default {
     text-align: center;
 }
 
+.pagination-link{
+    margin: 0 10px;
+}
+
 .active{
     text-decoration: none;
 }
@@ -77,5 +82,4 @@ a{
     text-decoration: none;
     color: #333;
 }
-
 </style>

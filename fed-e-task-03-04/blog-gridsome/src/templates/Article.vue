@@ -1,14 +1,16 @@
 <template>
   <Layout>
-    <div class="article-wrapper">
-      <h1 class="article-title">{{$page.post.Title}}</h1>
-      <p>{{$page.post.published_at}}</p>
-      <p class="article-favor">
+    <div class="container">
+      <div class="article-head">
+        <h2 class="article-title">{{$page.post.Title}}</h2>
+        <div class="article-info">
+          <span class="article-date">{{$page.post.published_at}}</span>
           <i class="el-icon-star-on" v-if="$page.post.favor"></i>
           <i class="el-icon-star-off" v-else></i>
           {{$page.post.favor}}
-      </p>
-      <div v-html="markdown($page.post.Content)"></div>
+        </div>
+      </div>
+      <div class="article-content" v-html="markdown($page.post.Content)"></div>
     </div>
   </Layout>
 </template>
@@ -42,12 +44,25 @@ export default {
 }
 </script>
 
-<style>
-.article-wrapper{
+<style scoped>
+.container{
   padding: 20px;
 }
 
-.article-title, .article-favor{
-  text-align: center;
+.article-head{
+  border-bottom: solid 1px #eee;
+}
+
+.article-title,
+.article-info{
+  padding: 10px;
+}
+
+.article-date{
+  margin-right: 100px;
+}
+
+.article-content{
+  padding: 20px;
 }
 </style>

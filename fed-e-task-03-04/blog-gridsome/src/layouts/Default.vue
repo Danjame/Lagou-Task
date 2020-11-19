@@ -40,7 +40,7 @@
           <slot />
         </el-main>
       </el-container>
-      <el-footer>Footer</el-footer>
+      <el-footer>My Blog</el-footer>
     </el-container>
   </div>
 </template>
@@ -60,6 +60,7 @@ export default {
           this.routerPush('/posts/', key)
           break;
         case '4':
+          this.routerPush('/projects/', key)
           break;
       }
     },
