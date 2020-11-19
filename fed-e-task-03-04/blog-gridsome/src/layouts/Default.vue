@@ -54,7 +54,7 @@ export default {
           this.routerPush('/', key)
           break;
         case '2':
-          this.routerPush('/about/', key)
+          this.routerPush('/social/', key)
           break;
         case '3':
           this.routerPush('/posts/', key)
@@ -87,11 +87,5 @@ export default {
   color: #333;
   text-align: center;
   line-height: 200px;
-}
-
-.el-main {
-  color: #333;
-  text-align: center;
-  line-height: 160px;
 }
 </style>

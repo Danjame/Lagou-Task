@@ -1,17 +1,29 @@
 <template>
   <Layout>
-       <div v-for="edge in $page.posts.edges" :key="edge.node.id">
-      <a href="">
-        <h2>
+    <div class="post-wrapper" v-for="edge in $page.posts.edges" :key="edge.node.id">
+      <g-link :to="'/article/' + edge.node.id">
+      <!-- <g-link to="/article/"> -->
+        <h2 class="post-title">
           {{edge.node.Title}}
         </h2>
-        <p>
-          {{edge.node.published_at}}
+        <p class="post-time">
+          发布时间： {{edge.node.published_at}}
         </p>
-        <p>
+        <p class="post-favor">
+          <i class="el-icon-star-on" v-if="edge.node.favor"></i>
+          <i class="el-icon-star-off" v-else></i>
           {{edge.node.favor}}
         </p>
-      </a>
+      </g-link>
+    </div>
+    <div class="pagination">
+        <el-pagination
+        background
+        layout="prev, pager, next"
+        :total="100"
+        style=""
+        >
+    </el-pagination>
     </div>
   </Layout>
 </template>
@@ -35,13 +47,35 @@ query{
 <script>
 export default {
   metaInfo: {
-    title: 'Hello, world!'
+    title: 'Post List'
   }
 }
 </script>
 
 <style>
-.home-links a {
-  margin-right: 1rem;
+.post-wrapper{
+    margin-bottom: 20px;
+    border-bottom: solid 1px #eee;
 }
+
+.post-title,
+.post-time,
+.post-favor{
+    text-align: center;
+    padding: 10px;
+}
+
+.pagination{
+    text-align: center;
+}
+
+.active{
+    text-decoration: none;
+}
+
+a{
+    text-decoration: none;
+    color: #333;
+}
+
 </style>

@@ -22,5 +22,13 @@ module.exports = {
         // }
       }
     }
-  ]
+  ],
+  templates:{
+    StrapiPost:[
+      {
+        path: '/article/:id',
+        component: './src/templates/Article.vue'
+      }
+    ]
+  }
 }
