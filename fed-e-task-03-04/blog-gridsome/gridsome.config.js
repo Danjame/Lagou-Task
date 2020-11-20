@@ -12,7 +12,7 @@ module.exports = {
       options: {
         apiURL: 'http://localhost:1337',
         queryLimit: 1000, // Defaults to 100
-        contentTypes: ['post', 'follow', 'follower'],
+        contentTypes: ['post', 'follow', 'follower', 'project', 'tag'],
         // singleTypes: ['impressum'],
         // Possibility to login with a Strapi user,
         // when content types are not publicly available (optional).

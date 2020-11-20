@@ -2,12 +2,12 @@
   <Layout>
     <div class="container">
       <div class="article-head">
-        <h2 class="article-title">{{$page.post.Title}}</h2>
+        <h2 class="article-title">{{ $page.post.Title }}</h2>
         <div class="article-info">
-          <span class="article-date">{{$page.post.published_at}}</span>
+          <span class="article-date">{{ $page.post.published_at }}</span>
           <i class="el-icon-star-on" v-if="$page.post.favor"></i>
           <i class="el-icon-star-off" v-else></i>
-          {{$page.post.favor}}
+          {{ $page.post.favor }}
         </div>
       </div>
       <div class="article-content" v-html="markdown($page.post.Content)"></div>
@@ -28,41 +28,41 @@ query($id: ID!){
 </page-query>
 
 <script>
-import MarkdownIt from 'markdown-it'
-const md = new MarkdownIt()
+import MarkdownIt from "markdown-it";
+const md = new MarkdownIt();
 export default {
   metaInfo() {
-    return{
-      title: this.$page.post.Title
-    }
+    return {
+      title: this.$page.post.Title,
+    };
   },
-  methods:{
-    markdown(article){
-      return md.render(article)
-    }
-  }
-}
+  methods: {
+    markdown(article) {
+      return md.render(article);
+    },
+  },
+};
 </script>
 
 <style scoped>
-.container{
+.container {
   padding: 20px;
 }
 
-.article-head{
+.article-head {
   border-bottom: solid 1px #eee;
 }
 
 .article-title,
-.article-info{
+.article-info {
   padding: 10px;
 }
 
-.article-date{
+.article-date {
   margin-right: 100px;
 }
 
-.article-content{
+.article-content {
   padding: 20px;
 }
 </style>

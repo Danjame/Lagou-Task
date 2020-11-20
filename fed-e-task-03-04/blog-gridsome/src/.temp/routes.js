@@ -1,7 +1,7 @@
 const c1 = () => import(/* webpackChunkName: "page--src--pages--social-vue" */ "/Users/danjunxie/Desktop/myGit/Lagou-Task/fed-e-task-03-04/blog-gridsome/src/pages/Social.vue")
 const c2 = () => import(/* webpackChunkName: "page--src--pages--posts-vue" */ "/Users/danjunxie/Desktop/myGit/Lagou-Task/fed-e-task-03-04/blog-gridsome/src/pages/Posts.vue")
-const c3 = () => import(/* webpackChunkName: "page--src--templates--article-vue" */ "/Users/danjunxie/Desktop/myGit/Lagou-Task/fed-e-task-03-04/blog-gridsome/src/templates/Article.vue")
-const c4 = () => import(/* webpackChunkName: "page--src--pages--projects-vue" */ "/Users/danjunxie/Desktop/myGit/Lagou-Task/fed-e-task-03-04/blog-gridsome/src/pages/Projects.vue")
+const c3 = () => import(/* webpackChunkName: "page--src--pages--projects-vue" */ "/Users/danjunxie/Desktop/myGit/Lagou-Task/fed-e-task-03-04/blog-gridsome/src/pages/Projects.vue")
+const c4 = () => import(/* webpackChunkName: "page--src--templates--article-vue" */ "/Users/danjunxie/Desktop/myGit/Lagou-Task/fed-e-task-03-04/blog-gridsome/src/templates/Article.vue")
 const c5 = () => import(/* webpackChunkName: "page--node-modules--gridsome--app--pages--404-vue" */ "/Users/danjunxie/Desktop/myGit/Lagou-Task/fed-e-task-03-04/blog-gridsome/node_modules/gridsome/app/pages/404.vue")
 const c6 = () => import(/* webpackChunkName: "page--src--pages--index-vue" */ "/Users/danjunxie/Desktop/myGit/Lagou-Task/fed-e-task-03-04/blog-gridsome/src/pages/Index.vue")
 
@@ -15,11 +15,11 @@ export default [
     component: c2
   },
   {
-    path: "/article/:id/",
+    path: "/projects/:page(\\d+)?/",
     component: c3
   },
   {
-    path: "/projects/",
+    path: "/article/:id/",
     component: c4
   },
   {

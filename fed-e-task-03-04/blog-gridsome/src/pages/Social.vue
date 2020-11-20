@@ -7,7 +7,7 @@
       </el-menu>
       <div v-if="index == 1">
         <div class="social-list">
-          <div v-for="edge in $page.follow.edges" :key="edge.node.id">
+          <div v-for="edge in $page.follows.edges" :key="edge.node.id">
             <p>{{ edge.node.name }}</p>
             <g-link :to="edge.node.link">主页</g-link>
             <g-image :src="edge.node.img" />
@@ -16,13 +16,13 @@
         <div class="pagination">
           <pager
             linkClass="pagination-link"
-            :info="$page.follow.pageInfo"
+            :info="$page.follows.pageInfo"
           ></pager>
         </div>
       </div>
       <div v-if="index == 2">
         <div class="social-list">
-          <div v-for="edge in $page.follower.edges" :key="edge.node.id">
+          <div v-for="edge in $page.followers.edges" :key="edge.node.id">
             <p>{{ edge.node.name }}</p>
             <g-link :to="edge.node.link">主页</g-link>
             <g-image :src="edge.node.img" />
@@ -31,7 +31,7 @@
         <div class="pagination">
           <pager
             linkClass="pagination-link"
-            :info="$page.follower.pageInfo"
+            :info="$page.followers.pageInfo"
           ></pager>
         </div>
       </div>
@@ -41,7 +41,7 @@
 
 <page-query>
 query ($page: Int){
-  follow: allStrapiFollow (perPage:1, page: $page) @paginate{
+  follows: allStrapiFollow (perPage:1, page: $page) @paginate{
         pageInfo{
         totalPages
         currentPage
@@ -54,7 +54,7 @@ query ($page: Int){
       }
     }
   }
-  follower: allStrapiFollower (perPage:6, page: $page) @paginate{
+  followers: allStrapiFollower (perPage:6, page: $page) @paginate{
       pageInfo{
       totalPages
       currentPage

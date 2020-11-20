@@ -1,8 +1,8 @@
 {
   "kind": "collectionType",
-  "collectionName": "posts",
+  "collectionName": "tags",
   "info": {
-    "name": "Post",
+    "name": "tag",
     "description": ""
   },
   "options": {
@@ -11,21 +11,19 @@
     "draftAndPublish": true
   },
   "attributes": {
-    "Title": {
+    "name": {
       "type": "string",
       "required": true,
       "unique": true
     },
-    "Content": {
-      "type": "richtext",
-      "required": true
+    "posts": {
+      "collection": "post",
+      "via": "tags",
+      "dominant": true
     },
-    "favor": {
-      "type": "integer"
-    },
-    "tags": {
-      "via": "posts",
-      "collection": "tag"
+    "projects": {
+      "via": "tags",
+      "collection": "project"
     }
   }
 }

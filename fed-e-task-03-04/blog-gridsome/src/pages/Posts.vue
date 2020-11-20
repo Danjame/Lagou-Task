@@ -1,22 +1,24 @@
 <template>
   <Layout>
-    <div class="container" v-for="edge in $page.posts.edges" :key="edge.node.id">
+    <div
+      class="container"
+      v-for="edge in $page.posts.edges"
+      :key="edge.node.id"
+    >
       <g-link :to="'/article/' + edge.node.id">
         <h2 class="post-title">
-          {{edge.node.Title}}
+          {{ edge.node.Title }}
         </h2>
-        <p class="post-time">
-          发布时间： {{edge.node.published_at}}
-        </p>
+        <p class="post-time">发布时间： {{ edge.node.published_at }}</p>
         <p class="post-favor">
           <i class="el-icon-star-on" v-if="edge.node.favor"></i>
           <i class="el-icon-star-off" v-else></i>
-          {{edge.node.favor}}
+          {{ edge.node.favor }}
         </p>
       </g-link>
     </div>
     <div class="pagination">
-        <pager linkClass="pagination-link" :info="$page.posts.pageInfo"></pager>
+      <pager linkClass="pagination-link" :info="$page.posts.pageInfo"></pager>
     </div>
   </Layout>
 </template>
@@ -42,44 +44,44 @@ query ($page: Int){
 </page-query>
 
 <script>
-import { Pager } from 'gridsome'
+import { Pager } from "gridsome";
 export default {
   metaInfo: {
-    title: 'Post List'
+    title: "Post List",
   },
-  components:{
-      Pager
-  }
-}
+  components: {
+    Pager,
+  },
+};
 </script>
 
 <style scoped>
-.container{
-    margin-bottom: 20px;
-    border-bottom: solid 1px #eee;
+.container {
+  margin-bottom: 20px;
+  border-bottom: solid 1px #eee;
 }
 
 .post-title,
 .post-time,
-.post-favor{
-    text-align: center;
-    padding: 10px;
+.post-favor {
+  text-align: center;
+  padding: 10px;
 }
 
-.pagination{
-    text-align: center;
+.pagination {
+  text-align: center;
 }
 
-.pagination-link{
-    margin: 0 10px;
+.pagination-link {
+  margin: 0 10px;
 }
 
-.active{
-    text-decoration: none;
+.active {
+  text-decoration: none;
 }
 
-a{
-    text-decoration: none;
-    color: #333;
+a {
+  text-decoration: none;
+  color: #333;
 }
 </style>
