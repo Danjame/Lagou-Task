@@ -1,4 +1,5 @@
-# ** Composition APIs 及 3.0 原理 **
+# **Composition APIs 及 3.0 原理**
+
 ## Composition APIs
 ### Vue 3.0 Composition APIs
 - 提供了基于函数的 API, 可以更加灵活地组织组件的逻辑和内部代码结构，甚至可以把逻辑功能提取出来实现重用。
@@ -68,4 +69,3 @@ npm run dev
 - watchEffect 不要指定监听属性，它会自动收集依赖，只要回调函数中引用了响应式数据，当这些响应式数据变更时，即触发回调函数
 - watch可以拿到新值和旧值，但是 watchEffect 拿不到
 - watchEffect 在组件初始化的时候会执行一次用以收集依赖，之后一旦依赖发生变更，就会执行回调。但是 watch 不需要收集依赖
-
