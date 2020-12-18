@@ -11,7 +11,68 @@
 - 修改容器数据使用 mutation 函数
 - 为了防止页面刷新导致的数据丢失，应该把数据存储在 localStorage
 
+### Vue Router
+#### 路由元信息
+- 定义路由的时候可以配置`meta`字段：
+```
+routes: [
+    {
+      path: '/',
+      component: Home,
+      children: [
+        {
+          path: '/login',
+          component: login,
+          // a meta field
+          meta: { requiresAuth: true }
+        }
+      ]
+    }
+  ]
+```
+- 一个路由匹配到的所有路由记录会暴露为`$route`对象 (还有在导航守卫中的路由对象) 的`$route.matched`数组。因此，我们需要遍历`$route.matched`来检查路由记录中的`meta`字段。
+```
+// 检查元字段
+to.matched.some(record => record.meta.requiresAuth)
+```
+
 ### 路由拦截器和请求拦截器
 - 路由拦截器（导航守卫）：允许前端页面跳转之前进行一些操作。如判断当前用户是否登录过，如果登陆过，则可以跳转，否则重定向到登录页面
+```
+const router = new VueRouter({ ... })
+router.beforeEach((to, from, next) => {
+  // Do something before being navigated
+})
+```
 - 请求拦截器：允许在请求发送前进行一些操作，如在每个请求体里统一加上 token，进行身份验证
+```
+// Add a request interceptor
+axios.interceptors.request.use(function (config) {
+    // Do something before request is sent
+    return config;
+  }, function (error) {
+    // Do something with request error
+    return Promise.reject(error);
+  });
+```
 - 响应拦截器：允许在收到响应之后进行一些操作，如收到 token 过期的响应，先刷行 token 然后再次发出请求
+```
+// Add a response interceptor
+axios.interceptors.response.use(function (response) {
+    // Any status code that lie within the range of 2xx cause this function to trigger
+    // Do something with response data
+    return response;
+  }, function (error) {
+    // Any status codes that falls outside the range of 2xx cause this function to trigger
+    // Do something with response error
+    return Promise.reject(error);
+  });
+```
+
+### 处理 token 过期
+1. 使用请求拦截器，拦截每个请求并判断 token 的有效时间。如果 token 过期，则刮起请求，刷新 token 之后重新请求
+- 优点：节省请求，节省流量
+- 缺点：需要后端提供过期时间字段；如果使用本地时间被篡改，拦截会失败
+2. 使用响应拦截器，拦截返回的数据。如果返回过期状态，则先刷新 token 再进行请求
+- 优点：无需过期时间字段，无需判断时间
+- 缺点：多一次请求，消耗更多的流量
