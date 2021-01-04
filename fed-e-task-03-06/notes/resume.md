@@ -76,3 +76,11 @@ axios.interceptors.response.use(function (response) {
 2. 使用响应拦截器，拦截返回的数据。如果返回过期状态，则先刷新 token 再进行请求
 - 优点：无需过期时间字段，无需判断时间
 - 缺点：多一次请求，消耗更多的流量
+
+### 部署相关
+1. 如果在 history 模式下使用 Vue Router，将无法搭配简单的静态文件服务器。如 Vue Router 中的 `todos/1`，开发服务器会配置相关的响应，但是生产环境的简单静态服务器会返回404。在这种情况下，需要在生产环境服务器中将没有匹配到的静态文件的请求回退到 `index.html`。[Vue Router 官方文档说明](https://router.vuejs.org/zh/guide/essentials/history-mode.html)
+2. 接口跨域
+- 如果前端和后端 API 同源，则不需要做任何跨域处理
+- 如果前端和后端 API 不同源，需要做跨域处理：
+  - 方式一：配置服务端代理（Nginx, Apache, Tomcat, ...）
+  - 方式二：后台接口启用 `CORS` 支持
