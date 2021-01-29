@@ -30,8 +30,7 @@ React 16 实现了自己的任务调度库 Scheduler。它可以实现在浏览�
 - DOM 更新操作: newFiber vs oldFiber -> Fiber[] -> DOM
 
 ### 双缓存技术
-React 使用双缓存技术进行 Fiber 树的构建和替换，实现 DOM 对象的快速更新。由于 workInProgress 树是在内存中构建，
-因此其构建速度非常快。
+React 使用双缓存技术进行 Fiber 树的构建和替换，实现 DOM 对象的快速更新。由于 workInProgress 树是在内存中构建，因此其构建速度非常快。
 - currentFiber: 当前 Fiber 树，其 alternate 指向 workInProgress
 - workInProgress: 即将更新的 Fiber 树，其 alternate 属性指向 currentFiber
 
