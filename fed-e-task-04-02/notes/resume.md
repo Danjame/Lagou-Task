@@ -26,6 +26,21 @@ View => DISPATCH => Actions => Reducer => Store => SUBSCRIBE
 ### React + Redux
 使用Redux管理数据，由于 Store 独立于组件，使得数据管理独立于组件，解决了组件与组件之间传递数据困难的问题。
 
+### 更改 store 中的数据
+#### action 是改变状态的唯一途径
+`this.props.dispatch({type: 'action description'})`
+#### reducer 接收 action，并对数据进行处理并返回
+```
+const reducer = (state, action) => {
+    switch (action.type) {
+        case 'action description':
+        return { some data }
+        default:
+        return state
+    }
+}
+```
+
 ### Provider 组件 与 connect 方法
 #### Provider
 Provider 让组件可以获得 Store 中的数据
