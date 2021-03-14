@@ -51,7 +51,37 @@ memo 可以让组件中的数据没有发⽣变化时, 阻⽌组件更新. 类�
 1. 获取 DOM 元素对象
 2. 保存数据，即使组件重新渲染，保存的数据仍然存在，保存的数据的更改不会触发组件的重新渲染
 
-#### 自定义Hook
+#### 自定义 Hook
 1. ⾃定义 Hook 是标准的封装和共享逻辑的⽅式。
 2. ⾃定义 Hook 是⼀个函数, 其名称以 use 开头。
 3. ⾃定义 Hook 其实就是逻辑和内置 Hook 的组合。
+```
+function useUpdateInput (initialValue) {
+    const [value, setValue] = useState(initialValue)
+    return {
+        value,
+        onChange: event => setValue(event.target.value)
+    }
+}
+
+function App () {
+    const nameInput = useUpdateInput('')
+    const passwordInput = useUpdateInput('')
+    const submitForm = event => {
+        event.preventDefault()
+        console.log(nameInput.value)
+        console.log(passwordInput.value)
+    }
+    return <form onSubmit="submitForm">
+        <input type=""text name="name" {...nameInput} />
+        <input type=""password name="password" {...passwordInput} />
+        <input type="submit" />
+    </form>
+}
+```
+
+#### 路由 Hooks
+1. useHistory
+2. useLocation
+3. useRouteMatch
+4. useParams
