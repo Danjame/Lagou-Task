@@ -193,3 +193,39 @@ const getPrimaryColor = props => css`
 `
 <div css={getPrimaryColor}></div>
 ```
+
+### Chakra-UI
+#### 介绍
+Chakra UI 是⼀个简单的, 模块化的易于理解的 UI 组件库. 提供了丰富的构建 React 应⽤所需的UI组件。
+
+⽂档: https://next.chakra-ui.com/docs/getting-started
+
+1. Chakra UI 内置 Emotion，是 CSS-IN-JS 解决⽅案的集⼤成者
+2. 基于 Styled-Systems https://styled-system.com/ 
+3. ⽀持开箱即⽤的主题功能
+4. 默认⽀持⽩天和⿊夜两种模式
+5. 拥有⼤量功能丰富且⾮常有⽤的组件
+6. 使响应式设计变得轻⽽易举
+7. ⽂档清晰⽽全⾯. 查找API更加容易
+8. 适⽤于构建⽤于展示的给⽤户的界⾯
+9. 框架正在变得越来越完善
+
+#### 使用
+1. 引入主题
+```
+import { ChakraProvider } from '@chakra-ui/core'
+import theme from '@chakra-ui/theme'
+
+<ChakraProvider theme={theme}>
+    <App />
+</ChakraProvider>
+```
+1. 引入重置组件
+```
+import { CSSReset } from '@chakra-ui/core'
+
+<ChakraProvider theme={theme}>
+    <CSSReset />
+    <App />
+</ChakraProvider>
+```
