@@ -213,19 +213,25 @@ Chakra UI 是⼀个简单的, 模块化的易于理解的 UI 组件库. 提供�
 #### 使用
 1. 引入主题
 ```
-import { ChakraProvider } from '@chakra-ui/core'
+import { ChakraProvider } from '@chakra-ui/react'
 import theme from '@chakra-ui/theme'
 
-<ChakraProvider theme={theme}>
+ReactDOM.render(
+  <ChakraProvider theme={theme}>
     <App />
-</ChakraProvider>
+  </ChakraProvider>,
+  document.getElementById('root')
+)
 ```
-1. 引入重置组件
-```
-import { CSSReset } from '@chakra-ui/core'
 
-<ChakraProvider theme={theme}>
-    <CSSReset />
-    <App />
-</ChakraProvider>
+2. 依赖版本
+安装最新版本会出现问题，使用以下版本不会有问题：
+```
+ "dependencies": {
+    "@chakra-ui/react": "^1.0.4",
+    "@chakra-ui/theme": "^1.2.2",
+    "@emotion/react": "^11.1.3",
+    "@emotion/styled": "^11.0.0",
+    "framer-motion": "^3.1.1",
+  }
 ```
