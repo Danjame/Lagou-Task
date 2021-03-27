@@ -1,6 +1,7 @@
 # **React 服务端渲染专题（原生实现、Next.js 集成框架、Gatsby）**
 ## Next.js
-### Next.js 是 React 服务端渲染应⽤框架. ⽤于构建 SEO 友好的 SPA 应⽤。
+### 介绍
+Next.js 是 React 服务端渲染应⽤框架. ⽤于构建 SEO 友好的 SPA 应⽤。
 - ⽀持两种预渲染⽅式, 静态⽣成和服务器端渲染。
 - 基于⻚⾯的路由系统, 路由零配置。
 - ⾃动代码拆分. 优化⻚⾯加载速度。
@@ -10,9 +11,16 @@
 - 应⽤部署简单, 拥有专属部署环境 Vercel, 也可以部署在其他环境。
 
 ### 创建 Next.js 项⽬
-创建: `npm init next-app next-guide`
-运⾏: `npm run dev`
-访问: `localhost:3000`
+1. 创建: `npm init next-app next-guide`
+2. 运⾏: `npm run dev`
+3. 访问: `localhost:3000`
+
+新版依赖会有问题，可以使用一下版本：
+```
+  "dependencies": {
+    "next": "10.0.4"
+  }
+```
 
 ### 基于页面的路由系统
 - 在 Next.js 中, ⻚⾯是被放置在 pages ⽂件夹中的 React 组件
