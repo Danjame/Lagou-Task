@@ -24,6 +24,8 @@
       }
 }
 ```
+### 项目仓库
+https://github.com/Danjame/Sign-Component-Chakra/tree/master/sign-component
 
 ### 部署地址
 http://ssagarwood.asia:5000/
